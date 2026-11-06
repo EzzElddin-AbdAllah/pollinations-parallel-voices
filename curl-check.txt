@@ -1,0 +1,9 @@
+runner: 2026-11-06T20:56:20Z
+== https://ezzelddin-abdallah.github.io/pollinations-parallel-voices/
+curl_rc=0 result=200|text/html; charset=utf-8|9412|0.061225
+gen_marker=1
+<title>Parallel Voices — ask every model the same question</title>
+== https://rawcdn.githack.com/EzzElddin-AbdAllah/pollinations-parallel-voices/main/index.html
+curl_rc=0 result=200|text/html; charset=utf-8|9412|0.206771
+gen_marker=1
+<title>Parallel Voices — ask every model the same question</title>
