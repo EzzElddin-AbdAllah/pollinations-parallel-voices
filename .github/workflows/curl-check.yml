@@ -1,0 +1,33 @@
+name: curl-check
+on:
+  push:
+    paths:
+      - .github/workflows/curl-check.yml
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: probe URLs from runner
+        run: |
+          {
+            echo "runner: $(date -u +%FT%TZ)"
+            for u in "https://ezzelddin-abdallah.github.io/pollinations-parallel-voices/" "https://rawcdn.githack.com/EzzElddin-AbdAllah/pollinations-parallel-voices/main/index.html"; do
+              echo "== $u"
+              code=$(curl -sL --max-time 20 -o /tmp/page.html -w "%{http_code}|%{content_type}|%{size_download}|%{time_total}" "$u"); rc=$?
+              echo "curl_rc=$rc result=$code"
+              echo "gen_marker=$(grep -c 'gen.pollinations.ai' /tmp/page.html || true)"
+              grep -o "<title>[^<]*</title>" /tmp/page.html || true
+            done
+          } > curl-check.txt
+          cat curl-check.txt
+      - name: commit result
+        run: |
+          git config user.name "curl-check-bot"
+          git config user.email "actions@users.noreply.github.com"
+          git add curl-check.txt
+          git commit -m "curl check [skip ci]" || true
+          git push
